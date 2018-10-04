@@ -16,15 +16,13 @@ const router = express.Router();
 const API_PORT = process.env.API_PORT || 3001;
 
 // db config
-mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.'));
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
+  console.error('Connection to mongodb failed.', e);
+});
 
 
 // now we should configure the API to use bodyParser and look for JSON data in the request body
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(logger('dev'));
 
 // now we can set the route path & initialize the API
 router.get('/', (req, res) => {
@@ -42,6 +40,7 @@ router.post('/comments', (req, res) => {
   const comment = new Comment();
   // body parser lets us use the req.body
   const { author, text } = req.body;
+  console.log(req.body);
   if (!author || !text) {
     // we should throw an error. we can do this check on the front end
     return res.json({
