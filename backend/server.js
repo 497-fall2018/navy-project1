@@ -1,6 +1,3 @@
-// server.js
-
-// first we import our dependencies…
 import express from 'express';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
@@ -13,7 +10,7 @@ const app = express();
 const router = express.Router();
 
 // set our port to either a predetermined port number if you have set it up, or 3001
-const API_PORT = process.env.API_PORT || 3001;
+const API_PORT = 3001;
 
 // db config
 mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
