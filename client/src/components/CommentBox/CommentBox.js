@@ -106,7 +106,6 @@ class CommentBox extends Component {
     return (
       <div className="container">
         <div className="comments">
-          <h2>Confessions:</h2>
           <CommentList
             data={this.state.data}
             handleDeleteComment={this.onDeleteComment}
@@ -127,4 +126,4 @@ class CommentBox extends Component {
   }
 }
 
-export default CommentBox;
+export { CommentBox };

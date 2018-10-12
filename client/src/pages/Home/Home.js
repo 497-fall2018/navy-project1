@@ -22,7 +22,7 @@ class HomeComponent extends Component {
     componentWillUpdate() {
         this.props.load_posts();
     }
-    
+
     handleNameChange = (event) => {
         this.props.change_name(event.target.value)
     }
@@ -72,6 +72,7 @@ class HomeComponent extends Component {
                         </Modal>
                     </div>
                 </div>
+                <CommentBox />
             </div>
         );
 
