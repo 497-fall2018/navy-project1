@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Comment from './Comment';
+import { Comment } from '../Comment';
 
 const CommentList = (props) => {
   const commentNodes = props.data.map(comment => (
@@ -37,4 +37,4 @@ CommentList.defaultProps = {
   data: [],
 };
 
-export default CommentList;
+export { CommentList };
