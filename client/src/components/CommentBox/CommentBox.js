@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
-import CommentList from './CommentList';
-import CommentForm from './CommentForm';
+import { CommentList } from '../CommentList';
+import { CommentForm } from '../CommentForm';
 import './CommentBox.css';
 
 class CommentBox extends Component {
@@ -106,7 +106,6 @@ class CommentBox extends Component {
     return (
       <div className="container">
         <div className="comments">
-          <h2>Comments:</h2>
           <CommentList
             data={this.state.data}
             handleDeleteComment={this.onDeleteComment}
@@ -127,4 +126,4 @@ class CommentBox extends Component {
   }
 }
 
-export default CommentBox;
+export { CommentBox };

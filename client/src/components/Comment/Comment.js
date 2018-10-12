@@ -29,4 +29,4 @@ Comment.propTypes = {
   timestamp: PropTypes.string.isRequired,
 };
 
-export default Comment;
+export { Comment };
