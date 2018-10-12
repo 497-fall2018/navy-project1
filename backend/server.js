@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 
-import Post from './models/post';
+import Post from './models/Post';
 
 // and create our instances
 const app = express();
