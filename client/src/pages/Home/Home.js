@@ -72,14 +72,15 @@ class HomeComponent extends Component {
                               autoFocus={false}
                             /><br/>
 
-                            <input style={{display: 'none'}} accept="image/*" onChange={this.handleChange} id="icon-button-file" type="file"/>
-                            <img src={this.props.file} class="img-thumbnail"/>
-                            <label htmlFor="icon-button-file">
-                              <IconButton color="primary" component="span">
-                                <AddAPhoto style={{ fontSize: 35 }}/>
-                              </IconButton> <span verticalAlign='super'></span>
-                              
-                            </label>
+                            <div className="form-group">
+                                <input style={{display: 'none'}} accept="image/*" onChange={this.handleChange} id="icon-button-file" type="file"/>
+                                <img src={this.props.file} class="img-thumbnail" style={{width: "50%"}}/><br/>
+                                <label htmlFor="icon-button-file">
+                                  <IconButton color="primary" component="span">
+                                    <AddAPhoto style={{ fontSize: 35 }}/>
+                                  </IconButton> <span/>
+                                </label>
+                            </div>
 
                             <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.name===""}>
                                 Submit
@@ -98,13 +99,13 @@ export { HomeComponent };
 
 const mapStateToProps = (state, ownProps) => {
     const { post } = state;
-    const { description, modal_open, name, } = post;
+    const { description, modal_open, name, file} = post;
     return {
         ...ownProps,
         description,
         modal_open,
         name,
-
+        file,
     };
 };
 
