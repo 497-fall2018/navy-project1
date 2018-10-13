@@ -14,9 +14,11 @@ export const LOAD_POSTS_SUCCESS = "petstagram/post/LOAD_POSTS_SUCCESS";
 export const SUBMIT_POST = "petstagram/post/SUBMIT_POST_SUCCESS";
 export const SUBMIT_POST_FAILURE = "petstagram/post/SUBMIT_POST_FAILURE";
 export const SUBMIT_POST_SUCCESS = "petstagram/post/SUBMIT_POST_SUCCESS";
+export const HANDLE_CHANGE = "petstagram/post/HANDLE_CHANGE";
 // export const LOAD_RESULT = 'petstagram/home/LOAD_RESULT';
 // export const LOAD_RESULT_FAILURE = 'petstagram/home/LOAD_RESULT_FAILURE';
 // export const LOAD_RESULT_SUCCESS = 'petstagram/home/LOAD_RESULT_SUCCESS';
+
 
 const INITIAL_STATE = {
     modal_open: false,
@@ -32,16 +34,26 @@ const INITIAL_STATE = {
             }
         ]
     },],
+    file: null,
 };
 
 //Reducers
 export default function reducer(state = INITIAL_STATE, action) {
     switch (action.type){
+        case HANDLE_CHANGE:
+            return {
+                ...state,
+                file: action.payload,
+            }            
+
         case TOGGLE_MODAL:
             console.log(!state.modal_open);
             return {
                 ...state,
                 modal_open: !state.modal_open,
+                name: "",
+                description: "",
+                file: null,
             }
         case CHANGE_NAME:
             return {
@@ -112,6 +124,15 @@ export default function reducer(state = INITIAL_STATE, action) {
 
 
 //Action Creators
+export const handle_change = (file) => {
+    return (dispatch) => {
+        dispatch({
+            type: HANDLE_CHANGE,
+            payload: file,
+        })
+    }
+}
+
 export const toggle_modal = () => {
     return (dispatch) => {
         dispatch({
@@ -189,3 +210,4 @@ export const submit_post_failure = (dispatch, error) => {
         type: SUBMIT_POST_FAILURE,
     });
 }
+

@@ -2,6 +2,8 @@ import { Button, TextField } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
+import IconButton from '@material-ui/core/IconButton'
+import AddAPhoto from '@material-ui/icons/AddAPhoto'
 
 import {
     CommentBox,
@@ -12,6 +14,7 @@ import {
     load_posts,
     submit_post,
     toggle_modal,
+    handle_change,
 } from '../../ducks/post';
 import './styles.css';
 
@@ -24,16 +27,19 @@ class HomeComponent extends Component {
     }
 
     handleNameChange = (event) => {
-        this.props.change_name(event.target.value)
+        this.props.change_name(event.target.value);
     }
     handleDescriptionChange = (event) => {
-        this.props.change_description(event.target.value)
+        this.props.change_description(event.target.value);
     }
     toggleModal = () => {
         this.props.toggle_modal();
-    };
+    }
     handleSubmit = () => {
         this.props.submit_post();
+    }
+    handleChange = (event) => {
+        this.props.handle_change(URL.createObjectURL(event.target.files[0]));
     }
     render() {
         return (
@@ -47,7 +53,7 @@ class HomeComponent extends Component {
                           onClose={this.toggleModal}
                           center
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          style={{padding: '2em'}}
+                          
                         >
                             <h2>New Pet Post:</h2>
                             Name: <TextField required
@@ -63,8 +69,17 @@ class HomeComponent extends Component {
                               value={this.props.description}
                               onChange={this.handleDescriptionChange}
                               margin="normal"
-                              autoFocus={true}
+                              autoFocus={false}
                             /><br/>
+
+                            <input style={{display: 'none'}} accept="image/*" onChange={this.handleChange} id="icon-button-file" type="file"/>
+                            <img src={this.props.file} class="img-thumbnail"/>
+                            <label htmlFor="icon-button-file">
+                              <IconButton color="primary" component="span">
+                                <AddAPhoto style={{ fontSize: 35 }}/>
+                              </IconButton> <span verticalAlign='super'></span>
+                              
+                            </label>
 
                             <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.name===""}>
                                 Submit
@@ -98,5 +113,6 @@ export const Home = connect(mapStateToProps, {
     change_name,
     load_posts,
     submit_post,
-    toggle_modal
+    toggle_modal,
+    handle_change
 })(HomeComponent);
