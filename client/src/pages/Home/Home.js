@@ -73,7 +73,7 @@ class HomeComponent extends Component {
 
                             <div className="form-group">
                                 <input style={{display: 'none'}} accept="image/*" onChange={this.handleChange} id="icon-button-file" type="file"/>
-                                <img src={this.props.file} class="img-thumbnail" style={{width: "50%"}}/><br/>
+                                <img src={this.props.file} alt={this.props.file} className="img-thumbnail" style={{width: "50%"}}/><br/>
                                 <label htmlFor="icon-button-file">
                                   <IconButton color="primary" component="span">
                                     <AddAPhoto style={{ fontSize: 35 }}/>
