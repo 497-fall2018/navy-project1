@@ -1,9 +1,8 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, IconButton } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
-import IconButton from '@material-ui/core/IconButton'
-import AddAPhoto from '@material-ui/icons/AddAPhoto'
+import {AddAPhoto} from '@material-ui/icons';
 
 import {
     CommentBox,
@@ -53,7 +52,7 @@ class HomeComponent extends Component {
                           onClose={this.toggleModal}
                           center
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          
+                          style={{padding: '2em'}}
                         >
                             <h2>New Pet Post:</h2>
                             Name: <TextField required
