@@ -21,16 +21,16 @@ const CommentForm = props => (
   </form>
 );
 
-CommentForm.propTypes = {
-  submitComment: PropTypes.func.isRequired,
-  handleChangeText: PropTypes.func.isRequired,
-  text: PropTypes.string,
-  author: PropTypes.string,
-};
-
-CommentForm.defaultProps = {
-  text: '',
-  author: '',
-};
+// CommentForm.propTypes = {
+//   submitComment: PropTypes.func.isRequired,
+//   handleChangeText: PropTypes.func.isRequired,
+//   text: PropTypes.string,
+//   author: PropTypes.string,
+// };
+//
+// CommentForm.defaultProps = {
+//   text: '',
+//   author: '',
+// };
 
 export { CommentForm };

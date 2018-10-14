@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
 import { CommentList } from '../CommentList';
-import { CommentForm } from '../CommentForm';
+// import { CommentForm } from '../CommentForm';
 import './CommentBox.css';
 
 class CommentBox extends Component {
   constructor() {
     super();
     this.state = {
-      data: [],
-      error: null,
-      author: '',
-      comment: '',
-      updateId: null,
+      // data: [],
+      // error: null,
+      // author: '',
+      // description: '',
+      // updateId: null,
     };
     this.pollInterval = null;
   }
@@ -38,7 +38,7 @@ class CommentBox extends Component {
   onUpdateComment = (id) => {
     const oldComment = this.state.data.find(c => c._id === id);
     if (!oldComment) return;
-    this.setState({ author: oldComment.author, text: oldComment.text, updateId: id });
+    this.setState({ author: oldComment.author, description: oldComment.description, updateId: id });
   }
 
   onDeleteComment = (id) => {
@@ -56,8 +56,8 @@ class CommentBox extends Component {
 
   submitComment = (e) => {
     e.preventDefault();
-    const { author, text, updateId } = this.state;
-    if (!author || !text) return;
+    const { author, description, updateId } = this.state;
+    if (!author || !description) return;
     if (updateId) {
       this.submitUpdatedComment();
     } else {
@@ -66,28 +66,28 @@ class CommentBox extends Component {
   }
 
   submitNewComment = () => {
-    const { author, text } = this.state;
-    const data = [...this.state.data, { author, text, _id: Date.now().toString() }];
+    const { author, description } = this.state;
+    const data = [...this.state.data, { author, description, _id: Date.now().toString() }];
     this.setState({ data });
     fetch('/api/comments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ author, text }),
+      body: JSON.stringify({ author, description }),
     }).then(res => res.json()).then((res) => {
       if (!res.success) this.setState({ error: res.error.message || res.error });
-      else this.setState({ author: '', text: '', error: null });
+      else this.setState({ author: '', description: '', error: null });
     });
   }
 
   submitUpdatedComment = () => {
-    const { author, text, updateId } = this.state;
+    const { author, description, updateId } = this.state;
     fetch(`/api/comments/${updateId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ author, text }),
+      body: JSON.stringify({ author, description }),
     }).then(res => res.json()).then((res) => {
       if (!res.success) this.setState({ error: res.error.message || res.error });
-      else this.setState({ author: '', text: '', updateId: null });
+      else this.setState({ author: '', description: '', updateId: null });
     });
   }
 
@@ -112,14 +112,7 @@ class CommentBox extends Component {
             handleUpdateComment={this.onUpdateComment}
           />
         </div>
-        <div className="form">
-          <CommentForm
-            author={this.state.author}
-            text={this.state.text}
-            handleChangeText={this.onChangeText}
-            submitComment={this.submitComment}
-          />
-        </div>
+
         {this.state.error && <p>{this.state.error}</p>}
       </div>
     );

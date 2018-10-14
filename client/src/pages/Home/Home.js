@@ -5,28 +5,38 @@ import Modal from 'react-responsive-modal';
 import {AddAPhoto} from '@material-ui/icons';
 
 import {
-    CommentBox,
+    CommentList,
 } from '../../components';
 import {
     change_description,
-    change_name,
+    change_author,
     load_posts,
-    submit_post,
+    submit_new_post,
+    submit_updated_post,
     toggle_modal,
     handle_change,
 } from '../../ducks/post';
 import './styles.css';
 
 class HomeComponent extends Component {
+
     componentDidMount() {
         window.scrollTo(0, 0);
-    }
-    componentWillUpdate() {
         this.props.load_posts();
+        if (!this.pollInterval) {
+          this.pollInterval = setInterval(this.props.load_posts(), 2000);
+        }
     }
+    componentWillUnmount() {
+      if (this.pollInterval) clearInterval(this.pollInterval);
+      this.pollInterval = null;
+    }
+    // componentWillUpdate() {
+    //     this.props.load_posts();
+    // }
 
     handleNameChange = (event) => {
-        this.props.change_name(event.target.value);
+        this.props.change_author(event.target.value);
     }
     handleDescriptionChange = (event) => {
         this.props.change_description(event.target.value);
@@ -35,7 +45,11 @@ class HomeComponent extends Component {
         this.props.toggle_modal();
     }
     handleSubmit = () => {
-        this.props.submit_post();
+        if (this.props.updateId) {
+          this.props.submit_updated_post(this.props.author,this.props.description, this.props.updateId);
+        } else {
+          this.props.submit_new_post(this.props.author,this.props.description);
+        }
     }
     handleChange = (event) => {
         this.props.handle_change(URL.createObjectURL(event.target.files[0]));
@@ -54,10 +68,10 @@ class HomeComponent extends Component {
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
                           style={{padding: '2em'}}
                         >
-                            <h2>New Pet Post:</h2>
+                            <h2>Your Post:</h2>
                             Name: <TextField required
                               label="Name"
-                              value={this.props.name}
+                              value={this.props.author}
                               onChange={this.handleNameChange}
                               margin="normal"
                               autoFocus={true}
@@ -81,13 +95,25 @@ class HomeComponent extends Component {
                                 </label>
                             </div>
 
-                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.name===""}>
+                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author===""}>
                                 Submit
                             </Button>
                         </Modal>
                     </div>
                 </div>
-                <CommentBox />
+                <div className="container">
+                    <div className="comments">
+                      <CommentList
+                        data={this.props.data}
+                        handleDeleteComment={this.props.handle_delete_comment}
+                        handleUpdateComment={this.props.handle_update_comment}
+                      />
+                    </div>
+                </div>
+
+
+                {this.props.error && <p>{this.props.error}</p>}
+
             </div>
         );
 
@@ -98,21 +124,26 @@ export { HomeComponent };
 
 const mapStateToProps = (state, ownProps) => {
     const { post } = state;
-    const { description, modal_open, name, file} = post;
+    const { data, description, error, modal_open, author, file, pollInterval, updateId} = post;
     return {
         ...ownProps,
+        author,
+        data,
         description,
-        modal_open,
-        name,
+        error,
         file,
+        modal_open,
+        pollInterval,
+        updateId,
     };
 };
 
 export const Home = connect(mapStateToProps, {
     change_description,
-    change_name,
+    change_author,
     load_posts,
-    submit_post,
+    submit_new_post,
+    submit_updated_post,
     toggle_modal,
     handle_change
 })(HomeComponent);

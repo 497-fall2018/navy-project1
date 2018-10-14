@@ -13,10 +13,12 @@ const router = express.Router();
 const API_PORT = 3001;
 
 // db config
-mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
+// mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
+//   console.error('Connection to mongodb failed.', e);
+// });
+mongoose.connect('mongodb://localhost:27017/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
   console.error('Connection to mongodb failed.', e);
 });
-
 
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 app.use(bodyParser.json());
@@ -36,9 +38,9 @@ router.get('/comments', (req, res) => {
 router.post('/comments', (req, res) => {
   const comment = new Comment();
   // body parser lets us use the req.body
-  const { author, text } = req.body;
+  const { author, description } = req.body;
   console.log(req.body);
-  if (!author || !text) {
+  if (!author || !description) {
     // we should throw an error. we can do this check on the front end
     return res.json({
       success: false,
@@ -46,7 +48,7 @@ router.post('/comments', (req, res) => {
     });
   }
   comment.author = author;
-  comment.text = text;
+  comment.description = description;
   comment.save(err => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
@@ -61,9 +63,9 @@ router.put('/comments/:commentId', (req, res) => {
   }
   Comment.findById(commentId, (error, comment) => {
     if (error) return res.json({ success: false, error });
-    const { author, text } = req.body;
+    const { author, description } = req.body;
     if (author) comment.author = author;
-    if (text) comment.text = text;
+    if (description) comment.description = description;
     comment.save(error => {
       if (error) return res.json({ success: false, error });
       return res.json({ success: true });
