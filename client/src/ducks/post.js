@@ -44,7 +44,7 @@ export default function reducer(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 file: action.payload,
-            }            
+            }
 
         case TOGGLE_MODAL:
             console.log(!state.modal_open);
@@ -159,8 +159,8 @@ export const change_description = (desc) => {
     }
 }
 
-export const load_posts = (whereto) => {
-    const url = `${APIRoot}/${whereto}`;
+export const load_posts = () => {
+    const url = `${APIRoot}/posts`;
     return (dispatch) => {
         dispatch({
             type: LOAD_POSTS
@@ -189,7 +189,7 @@ export const submit_post = (name, description) => {
         dispatch({
             type: SUBMIT_POST,
         });
-        axios.post(`${APIRoot}/post`, {
+        axios.post(`${APIRoot}/posts`, {
             "name": name,
             "description": description,
         })
@@ -210,4 +210,3 @@ export const submit_post_failure = (dispatch, error) => {
         type: SUBMIT_POST_FAILURE,
     });
 }
-
