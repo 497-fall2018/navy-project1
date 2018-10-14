@@ -44,7 +44,7 @@ class HomeComponent extends Component {
         return (
             <div>
                 <div className="header">
-                    Petstagram
+                    <div className="title"><h2>Petstagram</h2></div>
                     <div className="checkOutButton">
                         <Button variant="contained" color="primary" onClick={this.toggleModal}>Create Post</Button>
                         <Modal
