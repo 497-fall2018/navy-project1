@@ -13,10 +13,12 @@ const router = express.Router();
 const API_PORT = 3001;
 
 // db config
-mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
+// mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
+//   console.error('Connection to mongodb failed.', e);
+// });
+mongoose.connect('mongodb://localhost:27017/navy', { useNewUrlParser: true }).then(() => console.log('Connected to mongodb.')).catch((e) => {
   console.error('Connection to mongodb failed.', e);
 });
-
 
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 app.use(bodyParser.json());
