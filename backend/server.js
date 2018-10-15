@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
 import mongoose from 'mongoose';
-import multer form 'multer';
+import multer from 'multer';
 import fs from 'fs';
 
 import Comment from './models/comment';
@@ -26,13 +26,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// db config
-// mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
-//   console.error('Connection to mongodb failed.', e);
-// });
-mongoose.connect('mongodb://localhost:27017/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
+//db config
+mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
 	console.error('Connection to mongodb failed.', e);
 });
+// mongoose.connect('mongodb://localhost:27017/navy').then(() => console.log('Connected to mongodb.')).catch((e) => {
+// 	console.error('Connection to mongodb failed.', e);
+// });
 
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 app.use(bodyParser.json());
