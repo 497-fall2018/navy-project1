@@ -14,7 +14,6 @@ import {
     handle_change,
     handle_image_change
 } from '../../ducks/post';
-import "./styles.css";
 
 class ModalBoxComponent extends Component {
     handleNameChange = (event) => {
@@ -49,10 +48,10 @@ class ModalBoxComponent extends Component {
                           onClose={this.toggleModal}
                           center
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          style={{padding: '2em', width: "80vw"}}
+                          style={{padding: '2em', width: '1000px'}}
                         >
-                            <h2>Your Post:</h2>
-                            <span>Name: </span><TextField required
+                            <h2 style={{fontFamily:'monospace'}}>Your Post:</h2>
+                            <TextField required
                               label="Name"
                               value={this.props.author}
                               onChange={this.handleNameChange}
@@ -60,7 +59,7 @@ class ModalBoxComponent extends Component {
                               autoFocus={true}
                             /><br/>
 
-                            <span>Description: </span><TextField required
+                            <TextField required
                               label="Description"
                               value={this.props.description}
                               onChange={this.handleDescriptionChange}
@@ -78,7 +77,7 @@ class ModalBoxComponent extends Component {
                                 </label>
                             </div>
 
-                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author==="" || this.props.description==="" || this.props.file===null}>
+                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author===""}>
                                 Submit
                             </Button>
                         </Modal>
