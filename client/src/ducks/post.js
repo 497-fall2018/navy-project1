@@ -129,6 +129,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 author: action.payload.author,
                 description: action.payload.description,
                 file: action.payload.file,
+                image: action.payload.image,
                 updateId: action.payload.id,
             }
         case SUBMIT_UPDATED_POST:
@@ -141,8 +142,8 @@ export default function reducer(state = INITIAL_STATE, action) {
                     author: "",
                     description: "",
                     file: null,
+                    image: null,
                     updateId: null,
-
                 }
             } else {
                 return {
@@ -259,15 +260,24 @@ export const load_posts_failure = (dispatch, error) => {
     });
 }
 export const submit_updated_post = (author, description, file, updateId) => {
+    console.log("x" + updateId)
+    var formData = new FormData();
+    formData.append('author', author);
+    formData.append('description', description);
+    formData.append('frame', file, file.name);
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+    }
+    const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
     return (dispatch) => {
         dispatch({
             type: SUBMIT_UPDATED_POST,
         });
-        axios.put(`/api/comments/${updateId}`, {
-             "author": author,
-             "description": description,
-             "image": file,
-        })
+        axios.put(`/api/comments/${updateId}`, formData, config)
           .then((response) => submit_updated_post_success(dispatch, response))
           .catch((error) => submit_updated_post_failure(dispatch, error))
     }
@@ -288,7 +298,6 @@ export const submit_updated_post_failure = (dispatch, error) => {
 
 export const submit_new_post = (author, description, file) => {
     var formData = new FormData();
-
     formData.append('author', author);
     formData.append('description', description);
     formData.append('frame', file, file.name);
@@ -297,9 +306,6 @@ export const submit_new_post = (author, description, file) => {
                 'content-type': 'multipart/form-data'
             }
         };
-    for (var key of formData.entries()) {
-		console.log(key[0] + ', ' + key[1])
-	}
     return (dispatch) => {
         dispatch({
             type: SUBMIT_NEW_POST,
@@ -323,11 +329,11 @@ export const submit_new_post_failure = (dispatch, error) => {
     });
 }
 
-export const handle_update_post = (author, description, file, id) => {
+export const handle_update_post = (author, description, file, image, id) => {
     return (dispatch) => {
         dispatch({
             type: HANDLE_UPDATE_POST,
-            payload: {"author": author, "description": description, "image": file, "id": id}
+            payload: {"author": author, "description": description, "file": file, "image": image, "id": id}
         })
     }
 }

@@ -14,6 +14,7 @@ import {
     handle_change,
     handle_image_change
 } from '../../ducks/post';
+import "./styles.css";
 
 class ModalBoxComponent extends Component {
     handleNameChange = (event) => {
@@ -42,16 +43,16 @@ class ModalBoxComponent extends Component {
                 <div className="header">
                     <div className="title"><h2>Petstagram</h2></div>
                     <div className="checkOutButton">
-                        <Button variant="contained" color="lightgrey" onClick={this.toggleModal}>+</Button>
+                        <Button variant="contained" color="primary" onClick={this.toggleModal}>Create Post</Button>
                         <Modal
                           open={this.props.modal_open}
                           onClose={this.toggleModal}
                           center
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          style={{padding: '2em', width: '1000px'}}
+                          style={{padding: '2em', width: "80vw"}}
                         >
-                            <h2 style={{fontFamily:'monospace'}}>Your Post:</h2>
-                            <TextField required
+                            <h2>Your Post:</h2>
+                            <span>Name: </span><TextField required
                               label="Name"
                               value={this.props.author}
                               onChange={this.handleNameChange}
@@ -59,7 +60,7 @@ class ModalBoxComponent extends Component {
                               autoFocus={true}
                             /><br/>
 
-                            <TextField required
+                            <span>Description: </span><TextField required
                               label="Description"
                               value={this.props.description}
                               onChange={this.handleDescriptionChange}
