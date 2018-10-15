@@ -4,6 +4,7 @@ import logger from 'morgan';
 import mongoose from 'mongoose';
 import multer from 'multer';
 import fs from 'fs';
+import path from 'path';
 
 import Comment from './models/comment';
 
@@ -36,6 +37,7 @@ mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('
 
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -109,4 +111,4 @@ router.delete('/comments/:commentId', (req, res) => {
 // Use our router configuration when we call /api
 app.use('/api', router);
 
-app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
+app.listen(process.env.PORT || API_PORT, () => console.log(`Listening on port ${API_PORT}`));
