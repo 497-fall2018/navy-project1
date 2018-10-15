@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
 import {AddAPhoto} from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
 
 import {
     change_description,
@@ -43,16 +44,16 @@ class ModalBoxComponent extends Component {
                 <div className="header">
                     <div className="title"><h2>Petstagram</h2></div>
                     <div className="checkOutButton">
-                        <Button variant="contained" color="inherit" onClick={this.toggleModal}>+</Button>
+                        <Button variant="fab" mini color="inherit" aria-label="Add" onClick={this.toggleModal}><AddIcon /></Button>
                         <Modal
                           open={this.props.modal_open}
                           onClose={this.toggleModal}
                           center
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          style={{padding: '2em', width: "80vw"}}
+                          style={{padding: '2em', width: "1000px"}}
                         >
-                            <h2>Your Post:</h2>
-                            <span>Name: </span><TextField required
+                            <h2 style={{fontFamily:'monospace'}}>Your Post:</h2>
+                            <TextField required
                               label="Name"
                               value={this.props.author}
                               onChange={this.handleNameChange}
@@ -60,7 +61,7 @@ class ModalBoxComponent extends Component {
                               autoFocus={true}
                             /><br/>
 
-                            <span>Description: </span><TextField required
+                            <TextField required
                               label="Description"
                               value={this.props.description}
                               onChange={this.handleDescriptionChange}

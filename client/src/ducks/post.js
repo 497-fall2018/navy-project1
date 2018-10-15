@@ -306,6 +306,9 @@ export const submit_new_post = (author, description, file) => {
                 'content-type': 'multipart/form-data'
             }
         };
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+    }
     return (dispatch) => {
         dispatch({
             type: SUBMIT_NEW_POST,
