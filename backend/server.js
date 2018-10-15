@@ -37,6 +37,12 @@ mongoose.connect('mongodb://mmoderwell.com:27018/navy').then(() => console.log('
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+
 // now we can set the route path & initialize the API
 router.get('/', (req, res) => {
 	res.json({ message: 'Hello, World!' });
