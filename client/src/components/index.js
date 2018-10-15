@@ -1,1 +1,2 @@
-export * from './CommentBox';
+export * from './CommentList';
+export * from './ModalBox';

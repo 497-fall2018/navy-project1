@@ -1,40 +1,44 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Comment } from '../Comment';
+import {
+    handle_update_comment,
+    handle_delete_comment
+} from '../../ducks/post';
+import './styles.css';
 
-const CommentList = (props) => {
-  const commentNodes = props.data.map(comment => (
-    <Comment
-      author={comment.author}
-      key={comment._id}
-      id={comment._id}
-      timestamp={comment.updatedAt}
-      handleUpdateComment={props.handleUpdateComment}
-      handleDeleteComment={props.handleDeleteComment}
-    >
-      { comment.text}
-    </Comment>
-  ));
-  return (
-    <div>
-      { commentNodes }
-    </div>
-  );
+class CommentListComponent extends Component {
+    render() {
+        const commentNodes = (this.props.data).map(comment => (
+            <Comment
+              author={comment.author}
+              description={comment.description}
+              key={comment._id}
+              id={comment._id}
+              timestamp={comment.updatedAt}
+            >
+            </Comment>
+        ));
+        return (
+            <div>
+              { commentNodes }
+            </div>
+        );
+    }
 };
 
-CommentList.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    author: PropTypes.string,
-    id: PropTypes.string,
-    text: PropTypes.string,
-    updatedAt: PropTypes.string,
-  })),
-  handleDeleteComment: PropTypes.func.isRequired,
-  handleUpdateComment: PropTypes.func.isRequired,
+export { CommentListComponent };
+
+const mapStateToProps = (state, ownProps) => {
+    const { post } = state;
+    const { data } = post;
+    return {
+        ...ownProps,
+        data
+    };
 };
 
-CommentList.defaultProps = {
-  data: [],
-};
-
-export { CommentList };
+export const CommentList = connect(mapStateToProps, {
+    handle_delete_comment,
+    handle_update_comment,
+})(CommentListComponent);
