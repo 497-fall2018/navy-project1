@@ -4,6 +4,7 @@ import logger from 'morgan';
 import mongoose from 'mongoose';
 import multer from 'multer';
 import fs from 'fs';
+import path from 'path';
 
 import Comment from './models/comment';
 
@@ -36,6 +37,7 @@ mongoose.connect('mongodb://localhost:27017/navy').then(() => console.log('Conne
 
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -77,7 +79,7 @@ router.post('/comments', upload.single('frame'), (req, res) => {
 	});
 });
 
-router.put('/comments/:commentId', (req, res) => {
+router.put('/comments/:commentId', upload.single('frame'), (req, res) => {
 	console.log(req.params);
 	const { commentId } = req.params;
 	if (!commentId) {
@@ -86,8 +88,10 @@ router.put('/comments/:commentId', (req, res) => {
 	Comment.findById(commentId, (error, comment) => {
 		if (error) return res.json({ success: false, error });
 		const { author, description } = req.body;
+		const frame_name = req.file.filename;
 		if (author) comment.author = author;
 		if (description) comment.description = description;
+		if (frame_name) comment.image = frame_name;
 		comment.save(error => {
 			if (error) return res.json({ success: false, error });
 			return res.json({ success: true });
@@ -109,4 +113,4 @@ router.delete('/comments/:commentId', (req, res) => {
 // Use our router configuration when we call /api
 app.use('/api', router);
 
-app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
+app.listen(process.env.PORT || API_PORT, () => console.log(`Listening on port ${API_PORT}`));
