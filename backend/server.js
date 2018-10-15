@@ -17,7 +17,7 @@ const API_PORT = 3001;
 //file upload handling
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, '../../client/public/pets/');
+		cb(null, '../client/public/pets/');
 	},
 	filename: function (req, file, cb) {
 		//cb(null, file.originalname)
