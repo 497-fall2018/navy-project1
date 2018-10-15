@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
 import {AddAPhoto} from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
+
 
 import {
     change_description,
@@ -12,7 +14,6 @@ import {
     submit_updated_post,
     toggle_modal,
     handle_change,
-    handle_image_change
 } from '../../ducks/post';
 
 class ModalBoxComponent extends Component {
@@ -27,14 +28,13 @@ class ModalBoxComponent extends Component {
     }
     handleSubmit = () => {
         if (this.props.updateId) {
-          this.props.submit_updated_post(this.props.author,this.props.description, this.props.image, this.props.updateId);
+          this.props.submit_updated_post(this.props.author,this.props.description, this.props.updateId);
         } else {
-          this.props.submit_new_post(this.props.author,this.props.description, this.props.image);
+          this.props.submit_new_post(this.props.author,this.props.description);
         }
     }
     handleChange = (event) => {
         this.props.handle_change(URL.createObjectURL(event.target.files[0]));
-        this.props.handle_image_change(event.target.files[0]);
     }
     render() {
         return (
@@ -42,7 +42,7 @@ class ModalBoxComponent extends Component {
                 <div className="header">
                     <div className="title"><h2>Petstagram</h2></div>
                     <div className="checkOutButton">
-                        <Button variant="contained" color="inherit" onClick={this.toggleModal}>+</Button>
+                        <Button variant="fab" mini color="inherit" aria-label="Add" onClick={this.toggleModal}><AddIcon /></Button>
                         <Modal
                           open={this.props.modal_open}
                           onClose={this.toggleModal}
@@ -93,7 +93,7 @@ export { ModalBoxComponent };
 
 const mapStateToProps = (state, ownProps) => {
     const { post } = state;
-    const { data, description, error, modal_open, author, file, image, pollInterval, updateId} = post;
+    const { data, description, error, modal_open, author, file, pollInterval, updateId} = post;
     return {
         ...ownProps,
         author,
@@ -101,7 +101,6 @@ const mapStateToProps = (state, ownProps) => {
         description,
         error,
         file,
-        image,
         modal_open,
         pollInterval,
         updateId,
@@ -115,6 +114,5 @@ export const ModalBox = connect(mapStateToProps, {
     submit_new_post,
     submit_updated_post,
     toggle_modal,
-    handle_image_change,
     handle_change
 })(ModalBoxComponent);

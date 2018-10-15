@@ -11,12 +11,9 @@ class PostComponent extends Component {
     handleUpdatePost = (id) => {
       const oldPost = this.props.data.find(c => c._id === id);
       if (!oldPost) return;
-      this.props.handle_update_post(oldPost.author, oldPost.description, "/pets/"+oldPost.image, "/pets/"+oldPost.image, id);
+      this.props.handle_update_post(oldPost.author, oldPost.description, id);
     }
     render() {
-        console.log(this.props.id);
-        const oldPost = this.props.data.find(c => c._id === this.props.id);
-        const img_url = "/pets/" + oldPost.image;
         return(
             <div className="singleComment">
               <div className="commentHeader">
@@ -29,7 +26,7 @@ class PostComponent extends Component {
                     </span>
                 </div>
               </div>
-              <div><img alt="user_image" className="userImage" src={img_url} /></div>
+              <div><img alt="user_image" className="userImage" src={`https://picsum.photos/70?random=${this.props.id}`} /></div>
               <div className="textContent">
                 <span className="author2"><h3>{this.props.author}</h3></span>
                 <span className="singleCommentContent"><h3>{this.props.description}</h3></span>
