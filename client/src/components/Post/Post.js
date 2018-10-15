@@ -11,7 +11,7 @@ class PostComponent extends Component {
     handleUpdatePost = (id) => {
       const oldPost = this.props.data.find(c => c._id === id);
       if (!oldPost) return;
-      this.props.handle_update_post(oldPost.author, oldPost.description, id);
+      this.props.handle_update_post(oldPost.author, oldPost.description, oldPost.image, id);
     }
     render() {
         return(

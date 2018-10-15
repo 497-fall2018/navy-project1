@@ -12,6 +12,7 @@ import {
     submit_updated_post,
     toggle_modal,
     handle_change,
+    handle_image_change
 } from '../../ducks/post';
 
 class ModalBoxComponent extends Component {
@@ -26,13 +27,14 @@ class ModalBoxComponent extends Component {
     }
     handleSubmit = () => {
         if (this.props.updateId) {
-          this.props.submit_updated_post(this.props.author,this.props.description, this.props.updateId);
+          this.props.submit_updated_post(this.props.author,this.props.description, this.props.image, this.props.updateId);
         } else {
-          this.props.submit_new_post(this.props.author,this.props.description);
+          this.props.submit_new_post(this.props.author,this.props.description, this.props.image);
         }
     }
     handleChange = (event) => {
         this.props.handle_change(URL.createObjectURL(event.target.files[0]));
+        this.props.handle_image_change(event.target.files[0]);
     }
     render() {
         return (
@@ -75,7 +77,7 @@ class ModalBoxComponent extends Component {
                                 </label>
                             </div>
 
-                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author===""}>
+                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author==="" || this.props.description==="" || this.props.file===null}>
                                 Submit
                             </Button>
                         </Modal>
@@ -91,7 +93,7 @@ export { ModalBoxComponent };
 
 const mapStateToProps = (state, ownProps) => {
     const { post } = state;
-    const { data, description, error, modal_open, author, file, pollInterval, updateId} = post;
+    const { data, description, error, modal_open, author, file, image, pollInterval, updateId} = post;
     return {
         ...ownProps,
         author,
@@ -99,6 +101,7 @@ const mapStateToProps = (state, ownProps) => {
         description,
         error,
         file,
+        image,
         modal_open,
         pollInterval,
         updateId,
@@ -112,5 +115,6 @@ export const ModalBox = connect(mapStateToProps, {
     submit_new_post,
     submit_updated_post,
     toggle_modal,
+    handle_image_change,
     handle_change
 })(ModalBoxComponent);
