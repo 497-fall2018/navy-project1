@@ -77,7 +77,7 @@ class ModalBoxComponent extends Component {
                                 </label>
                             </div>
 
-                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author===""}>
+                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author===""||this.props.description===""||this.props.image===null}>
                                 Submit
                             </Button>
                         </Modal>
