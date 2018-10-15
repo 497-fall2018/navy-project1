@@ -79,7 +79,7 @@ router.post('/comments', upload.single('frame'), (req, res) => {
 	});
 });
 
-router.put('/comments/:commentId', (req, res) => {
+router.put('/comments/:commentId', upload.single('frame'), (req, res) => {
 	console.log(req.params);
 	const { commentId } = req.params;
 	if (!commentId) {
@@ -88,8 +88,10 @@ router.put('/comments/:commentId', (req, res) => {
 	Comment.findById(commentId, (error, comment) => {
 		if (error) return res.json({ success: false, error });
 		const { author, description } = req.body;
+		const frame_name = req.file.filename;
 		if (author) comment.author = author;
 		if (description) comment.description = description;
+		if (frame_name) comment.image = frame_name;
 		comment.save(error => {
 			if (error) return res.json({ success: false, error });
 			return res.json({ success: true });
