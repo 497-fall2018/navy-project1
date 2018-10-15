@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
 import {AddAPhoto} from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
+
 
 import {
     change_description,
@@ -40,7 +42,7 @@ class ModalBoxComponent extends Component {
                 <div className="header">
                     <div className="title"><h2>Petstagram</h2></div>
                     <div className="checkOutButton">
-                        <Button variant="contained" color="inherit" onClick={this.toggleModal}>+</Button>
+                        <Button variant="fab" mini color="inherit" aria-label="Add" onClick={this.toggleModal}><AddIcon /></Button>
                         <Modal
                           open={this.props.modal_open}
                           onClose={this.toggleModal}
