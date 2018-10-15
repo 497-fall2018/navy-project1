@@ -40,7 +40,7 @@ class ModalBoxComponent extends Component {
                 <div className="header">
                     <div className="title"><h2>Petstagram</h2></div>
                     <div className="checkOutButton">
-                        <Button variant="contained" color="lightgray" onClick={this.toggleModal}>+</Button>
+                        <Button variant="contained" color="inherit" onClick={this.toggleModal}>+</Button>
                         <Modal
                           open={this.props.modal_open}
                           onClose={this.toggleModal}
