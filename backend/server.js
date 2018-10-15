@@ -17,7 +17,7 @@ const API_PORT = 3001;
 //file upload handling
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, '../../client/public/pets/');
+		cb(null, '../client/public/pets/');
 	},
 	filename: function (req, file, cb) {
 		//cb(null, file.originalname)
@@ -36,6 +36,12 @@ mongoose.connect('mongodb://localhost:27017/navy').then(() => console.log('Conne
 
 // now we should configure the API to use bodyParser and look for JSON data in the request body
 app.use(bodyParser.json());
+
+app.use(function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
 
 // now we can set the route path & initialize the API
 router.get('/', (req, res) => {
