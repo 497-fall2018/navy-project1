@@ -1,11 +1,9 @@
-import { Button, TextField, IconButton } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-responsive-modal';
-import {AddAPhoto} from '@material-ui/icons';
 
 import {
     CommentList,
+    ModalBox
 } from '../../components';
 import {
     change_description,
@@ -20,99 +18,31 @@ import './styles.css';
 
 class HomeComponent extends Component {
 
+    constructor() {
+        super();
+        this.pollInterval = null;
+    }
     componentDidMount() {
-        window.scrollTo(0, 0);
         this.props.load_posts();
         if (!this.pollInterval) {
-          this.pollInterval = setInterval(this.props.load_posts(), 2000);
+          this.pollInterval = setInterval(()=>this.props.load_posts(), 1000);
         }
     }
+
     componentWillUnmount() {
       if (this.pollInterval) clearInterval(this.pollInterval);
       this.pollInterval = null;
     }
-    // componentWillUpdate() {
-    //     this.props.load_posts();
-    // }
 
-    handleNameChange = (event) => {
-        this.props.change_author(event.target.value);
-    }
-    handleDescriptionChange = (event) => {
-        this.props.change_description(event.target.value);
-    }
-    toggleModal = () => {
-        this.props.toggle_modal();
-    }
-    handleSubmit = () => {
-        if (this.props.updateId) {
-          this.props.submit_updated_post(this.props.author,this.props.description, this.props.updateId);
-        } else {
-          this.props.submit_new_post(this.props.author,this.props.description);
-        }
-    }
-    handleChange = (event) => {
-        this.props.handle_change(URL.createObjectURL(event.target.files[0]));
-    }
     render() {
         return (
             <div>
-                <div className="header">
-                    Petstagram
-                    <div className="checkOutButton">
-                        <Button variant="contained" color="primary" onClick={this.toggleModal}>Create Post</Button>
-                        <Modal
-                          open={this.props.modal_open}
-                          onClose={this.toggleModal}
-                          center
-                          classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          style={{padding: '2em'}}
-                        >
-                            <h2>Your Post:</h2>
-                            Name: <TextField required
-                              label="Name"
-                              value={this.props.author}
-                              onChange={this.handleNameChange}
-                              margin="normal"
-                              autoFocus={true}
-                            /><br/>
-
-                            Description: <TextField required
-                              label="Description"
-                              value={this.props.description}
-                              onChange={this.handleDescriptionChange}
-                              margin="normal"
-                              autoFocus={false}
-                            /><br/>
-
-                            <div className="form-group">
-                                <input style={{display: 'none'}} accept="image/*" onChange={this.handleChange} id="icon-button-file" type="file"/>
-                                <img src={this.props.file} alt={this.props.file} className="img-thumbnail" style={{width: "50%"}}/><br/>
-                                <label htmlFor="icon-button-file">
-                                  <IconButton color="primary" component="span">
-                                    <AddAPhoto style={{ fontSize: 35 }}/>
-                                  </IconButton> <span/>
-                                </label>
-                            </div>
-
-                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author===""}>
-                                Submit
-                            </Button>
-                        </Modal>
-                    </div>
-                </div>
+                <ModalBox />
                 <div className="container">
                     <div className="comments">
-                      <CommentList
-                        data={this.props.data}
-                        handleDeleteComment={this.props.handle_delete_comment}
-                        handleUpdateComment={this.props.handle_update_comment}
-                      />
+                      <CommentList />
                     </div>
                 </div>
-
-
-                {this.props.error && <p>{this.props.error}</p>}
 
             </div>
         );

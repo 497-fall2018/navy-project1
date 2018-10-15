@@ -16,8 +16,6 @@ class CommentListComponent extends Component {
               key={comment._id}
               id={comment._id}
               timestamp={comment.updatedAt}
-              handleUpdateComment={this.props.handleUpdateComment}
-              handleDeleteComment={this.props.handleDeleteComment}
             >
             </Comment>
         ));
@@ -28,21 +26,6 @@ class CommentListComponent extends Component {
         );
     }
 };
-
-// CommentList.propTypes = {
-//   data: PropTypes.arrayOf(PropTypes.shape({
-//     author: PropTypes.string,
-//     id: PropTypes.string,
-//     text: PropTypes.string,
-//     updatedAt: PropTypes.string,
-//   })),
-//   handleDeleteComment: PropTypes.func.isRequired,
-//   handleUpdateComment: PropTypes.func.isRequired,
-// };
-//
-// CommentList.defaultProps = {
-//   data: [],
-// };
 
 export { CommentListComponent };
 

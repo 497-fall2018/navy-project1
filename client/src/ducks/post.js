@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-import APIConfig from '../config/api';
-
-const APIRoot = `${APIConfig.apiroot}`;
-
 //Action Types
 export const TOGGLE_MODAL = "petstagram/post/TOGGLE_MODAL";
 export const CHANGE_DESCRIPTION = "petstagram/post/CHANGE_DESCRIPTION";
@@ -22,9 +18,6 @@ export const HANDLE_DELETE_COMMENT = "petstagram/post/HANDLE_DELETE_COMMENT";
 export const HANDLE_DELETE_COMMENT_SUCCESS = "petstagram/post/HANDLE_DELETE_COMMENT_SUCCESS";
 export const HANDLE_DELETE_COMMENT_FAILURE = "petstagram/post/HANDLE_DELETE_COMMENT_FAILURE";
 export const HANDLE_UPDATE_COMMENT = "petstagram/post/HANDLE_UPDATE_COMMENT";
-// export const LOAD_RESULT = 'petstagram/home/LOAD_RESULT';
-// export const LOAD_RESULT_FAILURE = 'petstagram/home/LOAD_RESULT_FAILURE';
-// export const LOAD_RESULT_SUCCESS = 'petstagram/home/LOAD_RESULT_SUCCESS';
 
 
 const INITIAL_STATE = {
@@ -76,8 +69,6 @@ export default function reducer(state = INITIAL_STATE, action) {
             if(action.payload) {
                 return {
                     ...state,
-                    author: "",
-                    description: "",
                     error_message: "",
                     data: action.payload.data,
                 }
@@ -123,8 +114,16 @@ export default function reducer(state = INITIAL_STATE, action) {
                 ...state,
                 error_message: "Something went wrong while loading the result.",
             }
+        case HANDLE_UPDATE_COMMENT://when user clicks on "update"
+            return {
+                ...state,
+                modal_open: !state.modal_open,
+                author: action.payload.author,
+                description: action.payload.description,
+                updateId: action.payload.id,
+            }
         case SUBMIT_UPDATED_POST:
-        case SUBMIT_UPDATED_POST_SUCCESS:
+        case SUBMIT_UPDATED_POST_SUCCESS://when user clicks on "submit" after edit
             if(action.payload){
                 return {
                     ...state,
@@ -133,6 +132,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                     author: "",
                     description: "",
                     updateId: null,
+
                 }
             } else {
                 return {
@@ -150,14 +150,20 @@ export default function reducer(state = INITIAL_STATE, action) {
             }
         case HANDLE_DELETE_COMMENT:
         case HANDLE_DELETE_COMMENT_SUCCESS:
-            const i = state.data.findIndex(c => c._id === action.payload);
-            const data = [
-              ...state.data.slice(0, i),
-              ...state.data.slice(i + 1),
-            ];
-            return {
-                ...state,
-                data: data
+            if(action.payload) {
+                const i = state.data.findIndex(c => c._id === action.payload);
+                const new_data = [
+                  ...state.data.slice(0, i),
+                  ...state.data.slice(i + 1),
+                ];
+                return {
+                    ...state,
+                    data: new_data
+                }
+            } else {
+                return {
+                    ...state,
+                }
             }
         case HANDLE_DELETE_COMMENT_FAILURE:
             /*
@@ -166,14 +172,6 @@ export default function reducer(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 error_message: "Something went wrong while loading the result.",
-            }
-        case HANDLE_UPDATE_COMMENT:
-            return {
-                ...state,
-                modal_open: !state.modal_open,
-                author: action.payload.author,
-                description: action.payload.description,
-                updateId: action.payload.id,
             }
         default:
             return {
@@ -232,7 +230,6 @@ export const load_posts = () => {
 }
 
 export const load_posts_success = (dispatch, response) => {
-    console.log(response.data.data)
     dispatch({
         type: LOAD_POSTS_SUCCESS,
         payload: response.data,
@@ -278,7 +275,7 @@ export const submit_new_post = (author, description) => {
         });
         axios.post(`/api/comments`, {
              "author": author,
-             "text": description,
+             "description": description,
         })
           .then((response) => submit_new_post_success(dispatch, response))
           .catch((error) => submit_new_post_failure(dispatch, error))
@@ -313,7 +310,6 @@ export const handle_delete_comment = (id) => {
             type: HANDLE_DELETE_COMMENT,
         });
         axios.delete(`/api/comments/${id}`, {
-            params: { _id: id }
         })
         .then((response) => handle_delete_comment_success(dispatch, response, id))
         .catch((error) => handle_delete_comment_failure(dispatch, error))
