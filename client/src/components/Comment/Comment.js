@@ -16,17 +16,20 @@ class CommentComponent extends Component {
     render() {
         return(
             <div className="singleComment">
-              <img alt="user_image" className="userImage" src={`https://picsum.photos/70?random=${this.props.id}`} />
-              <div className="textContent">
-                <div className="singleCommentContent">
-                  <h3>{this.props.author}</h3>
-                  <p>{this.props.description}</p>
-                </div>
+              <div className="commentHeader">
+                <div className="author"><h3>{this.props.author}</h3></div>
                 <div className="singleCommentButtons">
-                  <span className="time">{moment(this.props.timestamp).fromNow()}</span>
-                  <a onClick={() => { this.handleUpdateComment(this.props.id); }}>update</a>
-                  <a onClick={() => { this.props.handle_delete_comment(this.props.id); }}>delete</a>
+                    <span className="time">{moment(this.props.timestamp).fromNow()}</span>
+                    <span>
+                      <a onClick={() => { this.handleUpdateComment(this.props.id); }}>update</a>
+                      <a onClick={() => { this.props.handle_delete_comment(this.props.id); }}>delete</a>
+                    </span>
                 </div>
+              </div>
+              <div><img alt="user_image" className="userImage" src={`https://picsum.photos/70?random=${this.props.id}`} /></div>
+              <div className="textContent">
+                <span className="author2"><h3>{this.props.author}</h3></span>
+                <span className="singleCommentContent"><h3>{this.props.description}</h3></span>
               </div>
             </div>
         );

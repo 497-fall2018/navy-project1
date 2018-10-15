@@ -40,16 +40,16 @@ class ModalBoxComponent extends Component {
                 <div className="header">
                     <div className="title"><h2>Petstagram</h2></div>
                     <div className="checkOutButton">
-                        <Button variant="contained" color="primary" onClick={this.toggleModal}>Create Post</Button>
+                        <Button variant="contained" color="lightgrey" onClick={this.toggleModal}>+</Button>
                         <Modal
                           open={this.props.modal_open}
                           onClose={this.toggleModal}
                           center
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          style={{padding: '2em'}}
+                          style={{padding: '2em', width: '1000px'}}
                         >
-                            <h2>Your Post:</h2>
-                            Name: <TextField required
+                            <h2 style={{fontFamily:'monospace'}}>Your Post:</h2>
+                            <TextField required
                               label="Name"
                               value={this.props.author}
                               onChange={this.handleNameChange}
@@ -57,7 +57,7 @@ class ModalBoxComponent extends Component {
                               autoFocus={true}
                             /><br/>
 
-                            Description: <TextField required
+                            <TextField required
                               label="Description"
                               value={this.props.description}
                               onChange={this.handleDescriptionChange}
