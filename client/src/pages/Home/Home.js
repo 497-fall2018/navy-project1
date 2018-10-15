@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import {
-    CommentList,
+    PostList,
     ModalBox
 } from '../../components';
 import {
-    change_description,
-    change_author,
     load_posts,
-    submit_new_post,
-    submit_updated_post,
-    toggle_modal,
-    handle_change,
 } from '../../ducks/post';
 import './styles.css';
 
@@ -25,7 +19,7 @@ class HomeComponent extends Component {
     componentDidMount() {
         this.props.load_posts();
         if (!this.pollInterval) {
-          this.pollInterval = setInterval(()=>this.props.load_posts(), 1000);
+          this.pollInterval = setInterval(()=>this.props.load_posts(), 2000);
         }
     }
 
@@ -40,7 +34,7 @@ class HomeComponent extends Component {
                 <ModalBox />
                 <div className="container">
                     <div className="comments">
-                      <CommentList />
+                      <PostList />
                     </div>
                 </div>
 
@@ -69,11 +63,5 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export const Home = connect(mapStateToProps, {
-    change_description,
-    change_author,
     load_posts,
-    submit_new_post,
-    submit_updated_post,
-    toggle_modal,
-    handle_change
 })(HomeComponent);

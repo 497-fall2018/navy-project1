@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import {
     handle_change,
-    handle_delete_comment,
-    handle_update_comment,
+    handle_delete_post,
+    handle_update_post,
 } from '../../ducks/post';
 
-class CommentComponent extends Component {
-    handleUpdateComment = (id) => {
-      const oldComment = this.props.data.find(c => c._id === id);
-      if (!oldComment) return;
-      this.props.handle_update_comment(oldComment.author, oldComment.description, id);
+class PostComponent extends Component {
+    handleUpdatePost = (id) => {
+      const oldPost = this.props.data.find(c => c._id === id);
+      if (!oldPost) return;
+      this.props.handle_update_post(oldPost.author, oldPost.description, id);
     }
     render() {
         return(
@@ -24,8 +24,8 @@ class CommentComponent extends Component {
                 </div>
                 <div className="singleCommentButtons">
                   <span className="time">{moment(this.props.timestamp).fromNow()}</span>
-                  <a onClick={() => { this.handleUpdateComment(this.props.id); }}>update</a>
-                  <a onClick={() => { this.props.handle_delete_comment(this.props.id); }}>delete</a>
+                  <a onClick={() => { this.handleUpdatePost(this.props.id); }}>update</a>
+                  <a onClick={() => { this.props.handle_delete_post(this.props.id); }}>delete</a>
                 </div>
               </div>
             </div>
@@ -35,7 +35,7 @@ class CommentComponent extends Component {
 }
 
 
-export { CommentComponent };
+export { PostComponent };
 
 const mapStateToProps = (state, ownProps) => {
     const { post } = state;
@@ -47,8 +47,8 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-export const Comment = connect(mapStateToProps, {
+export const Post = connect(mapStateToProps, {
     handle_change,
-    handle_delete_comment,
-    handle_update_comment
-})(CommentComponent);
+    handle_delete_post,
+    handle_update_post
+})(PostComponent);

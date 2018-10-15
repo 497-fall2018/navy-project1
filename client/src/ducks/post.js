@@ -14,10 +14,10 @@ export const SUBMIT_UPDATED_POST = "petstagram/post/SUBMIT_UPDATED_POST_SUCCESS"
 export const SUBMIT_UPDATED_POST_FAILURE = "petstagram/post/SUBMIT_UPDATED_POST_FAILURE";
 export const SUBMIT_UPDATED_POST_SUCCESS = "petstagram/post/SUBMIT_UPDATED_POST_SUCCESS";
 export const HANDLE_CHANGE = "petstagram/post/HANDLE_CHANGE";
-export const HANDLE_DELETE_COMMENT = "petstagram/post/HANDLE_DELETE_COMMENT";
-export const HANDLE_DELETE_COMMENT_SUCCESS = "petstagram/post/HANDLE_DELETE_COMMENT_SUCCESS";
-export const HANDLE_DELETE_COMMENT_FAILURE = "petstagram/post/HANDLE_DELETE_COMMENT_FAILURE";
-export const HANDLE_UPDATE_COMMENT = "petstagram/post/HANDLE_UPDATE_COMMENT";
+export const HANDLE_DELETE_POST = "petstagram/post/HANDLE_DELETE_POST";
+export const HANDLE_DELETE_POST_SUCCESS = "petstagram/post/HANDLE_DELETE_POST_SUCCESS";
+export const HANDLE_DELETE_POST_FAILURE = "petstagram/post/HANDLE_DELETE_POST_FAILURE";
+export const HANDLE_UPDATE_POST = "petstagram/post/HANDLE_UPDATE_POST";
 
 
 const INITIAL_STATE = {
@@ -114,7 +114,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 ...state,
                 error_message: "Something went wrong while loading the result.",
             }
-        case HANDLE_UPDATE_COMMENT://when user clicks on "update"
+        case HANDLE_UPDATE_POST://when user clicks on "update"
             return {
                 ...state,
                 modal_open: !state.modal_open,
@@ -148,8 +148,8 @@ export default function reducer(state = INITIAL_STATE, action) {
                 ...state,
                 error_message: "Something went wrong while loading the result.",
             }
-        case HANDLE_DELETE_COMMENT:
-        case HANDLE_DELETE_COMMENT_SUCCESS:
+        case HANDLE_DELETE_POST:
+        case HANDLE_DELETE_POST_SUCCESS:
             if(action.payload) {
                 const i = state.data.findIndex(c => c._id === action.payload);
                 const new_data = [
@@ -165,7 +165,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                     ...state,
                 }
             }
-        case HANDLE_DELETE_COMMENT_FAILURE:
+        case HANDLE_DELETE_POST_FAILURE:
             /*
             if the posting fails, need to lead them to a 500 page.
             */
@@ -295,35 +295,35 @@ export const submit_new_post_failure = (dispatch, error) => {
     });
 }
 
-export const handle_update_comment = (author, description, id) => {
+export const handle_update_post = (author, description, id) => {
     return (dispatch) => {
         dispatch({
-            type: HANDLE_UPDATE_COMMENT,
+            type: HANDLE_UPDATE_POST,
             payload: {"author": author, "description": description,"id": id}
         })
     }
 }
 
-export const handle_delete_comment = (id) => {
+export const handle_delete_post = (id) => {
     return (dispatch) => {
         dispatch({
-            type: HANDLE_DELETE_COMMENT,
+            type: HANDLE_DELETE_POST,
         });
         axios.delete(`/api/comments/${id}`, {
         })
-        .then((response) => handle_delete_comment_success(dispatch, response, id))
-        .catch((error) => handle_delete_comment_failure(dispatch, error))
+        .then((response) => handle_delete_post_success(dispatch, response, id))
+        .catch((error) => handle_delete_post_failure(dispatch, error))
     }
 }
-export const handle_delete_comment_success = (dispatch, response, id) => {
+export const handle_delete_post_success = (dispatch, response, id) => {
     dispatch({
-        type: HANDLE_DELETE_COMMENT_SUCCESS,
+        type: HANDLE_DELETE_POST_SUCCESS,
         payload: id,
     });
 }
 
-export const handle_delete_comment_failure = (dispatch, error) => {
+export const handle_delete_post_failure = (dispatch, error) => {
     dispatch({
-        type: HANDLE_DELETE_COMMENT_FAILURE,
+        type: HANDLE_DELETE_POST_FAILURE,
     });
 }
