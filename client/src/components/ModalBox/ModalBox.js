@@ -12,9 +12,7 @@ import {
     submit_updated_post,
     toggle_modal,
     handle_change,
-    handle_image_change
 } from '../../ducks/post';
-import "./styles.css";
 
 class ModalBoxComponent extends Component {
     handleNameChange = (event) => {
@@ -28,14 +26,13 @@ class ModalBoxComponent extends Component {
     }
     handleSubmit = () => {
         if (this.props.updateId) {
-          this.props.submit_updated_post(this.props.author,this.props.description, this.props.image, this.props.updateId);
+          this.props.submit_updated_post(this.props.author,this.props.description, this.props.updateId);
         } else {
-          this.props.submit_new_post(this.props.author,this.props.description, this.props.image);
+          this.props.submit_new_post(this.props.author,this.props.description);
         }
     }
     handleChange = (event) => {
         this.props.handle_change(URL.createObjectURL(event.target.files[0]));
-        this.props.handle_image_change(event.target.files[0]);
     }
     render() {
         return (
@@ -49,10 +46,10 @@ class ModalBoxComponent extends Component {
                           onClose={this.toggleModal}
                           center
                           classNames={{ overlay: 'custom-overlay', modal: 'custom-modal' }}
-                          style={{padding: '2em', width: "80vw"}}
+                          style={{padding: '2em', width: '1000px'}}
                         >
-                            <h2>Your Post:</h2>
-                            <span>Name: </span><TextField required
+                            <h2 style={{fontFamily:'monospace'}}>Your Post:</h2>
+                            <TextField required
                               label="Name"
                               value={this.props.author}
                               onChange={this.handleNameChange}
@@ -60,7 +57,7 @@ class ModalBoxComponent extends Component {
                               autoFocus={true}
                             /><br/>
 
-                            <span>Description: </span><TextField required
+                            <TextField required
                               label="Description"
                               value={this.props.description}
                               onChange={this.handleDescriptionChange}
@@ -78,7 +75,7 @@ class ModalBoxComponent extends Component {
                                 </label>
                             </div>
 
-                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author==="" || this.props.description==="" || this.props.file===null}>
+                            <Button variant="contained" color="primary" onClick={()=>this.handleSubmit()} disabled={this.props.author===""}>
                                 Submit
                             </Button>
                         </Modal>
@@ -94,7 +91,7 @@ export { ModalBoxComponent };
 
 const mapStateToProps = (state, ownProps) => {
     const { post } = state;
-    const { data, description, error, modal_open, author, file, image, pollInterval, updateId} = post;
+    const { data, description, error, modal_open, author, file, pollInterval, updateId} = post;
     return {
         ...ownProps,
         author,
@@ -102,7 +99,6 @@ const mapStateToProps = (state, ownProps) => {
         description,
         error,
         file,
-        image,
         modal_open,
         pollInterval,
         updateId,
@@ -116,6 +112,5 @@ export const ModalBox = connect(mapStateToProps, {
     submit_new_post,
     submit_updated_post,
     toggle_modal,
-    handle_image_change,
     handle_change
 })(ModalBoxComponent);

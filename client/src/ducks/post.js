@@ -14,7 +14,6 @@ export const SUBMIT_UPDATED_POST = "petstagram/post/SUBMIT_UPDATED_POST_SUCCESS"
 export const SUBMIT_UPDATED_POST_FAILURE = "petstagram/post/SUBMIT_UPDATED_POST_FAILURE";
 export const SUBMIT_UPDATED_POST_SUCCESS = "petstagram/post/SUBMIT_UPDATED_POST_SUCCESS";
 export const HANDLE_CHANGE = "petstagram/post/HANDLE_CHANGE";
-export const HANDLE_IMAGE_CHANGE = "petstagram/post/HANDLE_IMAGE_CHANGE";
 export const HANDLE_DELETE_POST = "petstagram/post/HANDLE_DELETE_POST";
 export const HANDLE_DELETE_POST_SUCCESS = "petstagram/post/HANDLE_DELETE_POST_SUCCESS";
 export const HANDLE_DELETE_POST_FAILURE = "petstagram/post/HANDLE_DELETE_POST_FAILURE";
@@ -24,7 +23,6 @@ export const HANDLE_UPDATE_POST = "petstagram/post/HANDLE_UPDATE_POST";
 const INITIAL_STATE = {
     modal_open: false,
     file: null,
-    image: null,
     data: [{
         "author":"a" ,
         "description": "b",
@@ -47,11 +45,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 ...state,
                 file: action.payload,
             }
-        case HANDLE_IMAGE_CHANGE:
-            return {
-                ...state,
-                image: action.payload,
-            }
+
         case TOGGLE_MODAL:
             return {
                 ...state,
@@ -89,7 +83,7 @@ export default function reducer(state = INITIAL_STATE, action) {
             */
             return {
                 ...state,
-                error_message: "Something went wrong while loading the quiz. ",
+                error_message: "Something went wrong while loading the quiz. We put a monkey on it so it should be solved in no time!",
             }
         case SUBMIT_NEW_POST:
         case SUBMIT_NEW_POST_SUCCESS:
@@ -97,15 +91,13 @@ export default function reducer(state = INITIAL_STATE, action) {
                 var prev = state.data;
                 var aut = state.author;
                 var des = state.description;
-                var img = state.image;
-                const new_data = [...prev, { "author": aut, "description": des, "image": img, _id: Date.now().toString() }];
+                const new_data = [...prev, { "author": aut, "description": des, _id: Date.now().toString() }];
                 return {
                     ...state,
                     error_message: "",
                     modal_open: !state.modal_open,
                     author: "",
                     description: "",
-                    image: null,
                     data: new_data
                 }
             } else {
@@ -128,8 +120,6 @@ export default function reducer(state = INITIAL_STATE, action) {
                 modal_open: !state.modal_open,
                 author: action.payload.author,
                 description: action.payload.description,
-                file: action.payload.file,
-                image: action.payload.image,
                 updateId: action.payload.id,
             }
         case SUBMIT_UPDATED_POST:
@@ -141,9 +131,8 @@ export default function reducer(state = INITIAL_STATE, action) {
                     modal_open: !state.modal_open,
                     author: "",
                     description: "",
-                    file: null,
-                    image: null,
                     updateId: null,
+
                 }
             } else {
                 return {
@@ -201,14 +190,7 @@ export const handle_change = (file) => {
         })
     }
 }
-export const handle_image_change = (file) => {
-    return (dispatch) => {
-        dispatch({
-            type: HANDLE_IMAGE_CHANGE,
-            payload: file,
-        })
-    }
-}
+
 export const toggle_modal = () => {
     return (dispatch) => {
         dispatch({
@@ -259,25 +241,15 @@ export const load_posts_failure = (dispatch, error) => {
         type: LOAD_POSTS_FAILURE,
     });
 }
-export const submit_updated_post = (author, description, file, updateId) => {
-    console.log("x" + updateId)
-    var formData = new FormData();
-    formData.append('author', author);
-    formData.append('description', description);
-    formData.append('frame', file, file.name);
-    for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]);
-    }
-    const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        };
+export const submit_updated_post = (author, description, updateId) => {
     return (dispatch) => {
         dispatch({
             type: SUBMIT_UPDATED_POST,
         });
-        axios.put(`/api/comments/${updateId}`, formData, config)
+        axios.put(`/api/comments/${updateId}`, {
+             "author": author,
+             "description": description,
+        })
           .then((response) => submit_updated_post_success(dispatch, response))
           .catch((error) => submit_updated_post_failure(dispatch, error))
     }
@@ -296,21 +268,15 @@ export const submit_updated_post_failure = (dispatch, error) => {
     });
 }
 
-export const submit_new_post = (author, description, file) => {
-    var formData = new FormData();
-    formData.append('author', author);
-    formData.append('description', description);
-    formData.append('frame', file, file.name);
-    const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        };
+export const submit_new_post = (author, description) => {
     return (dispatch) => {
         dispatch({
             type: SUBMIT_NEW_POST,
         });
-        axios.post(`/api/comments`, formData, config)
+        axios.post(`/api/comments`, {
+             "author": author,
+             "description": description,
+        })
           .then((response) => submit_new_post_success(dispatch, response))
           .catch((error) => submit_new_post_failure(dispatch, error))
     }
@@ -329,11 +295,11 @@ export const submit_new_post_failure = (dispatch, error) => {
     });
 }
 
-export const handle_update_post = (author, description, file, image, id) => {
+export const handle_update_post = (author, description, id) => {
     return (dispatch) => {
         dispatch({
             type: HANDLE_UPDATE_POST,
-            payload: {"author": author, "description": description, "file": file, "image": image, "id": id}
+            payload: {"author": author, "description": description,"id": id}
         })
     }
 }
