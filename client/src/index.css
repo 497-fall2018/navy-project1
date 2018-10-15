@@ -10,7 +10,6 @@ body {
   background: lightgrey; 
   margin: 0 auto;
   height: 75px;
-  
 }
 
 .header div {
@@ -29,4 +28,9 @@ body {
   float: right;
   right: 5%;
   bottom: 3%;
+}
+
+Modal {
+  background-color: red;
+  width: 100%;
 }
