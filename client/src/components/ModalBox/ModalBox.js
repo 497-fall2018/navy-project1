@@ -33,6 +33,9 @@ class ModalBoxComponent extends Component {
         } else {
           this.props.submit_new_post(this.props.author,this.props.description, this.props.image);
         }
+        setTimeout(() => {
+            this.props.load_posts();
+        }, 1000);
     }
     handleChange = (event) => {
         this.props.handle_change(URL.createObjectURL(event.target.files[0]));

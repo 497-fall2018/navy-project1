@@ -11,21 +11,8 @@ import {
 import './styles.css';
 
 class HomeComponent extends Component {
-
-    constructor() {
-        super();
-        this.pollInterval = null;
-    }
     componentDidMount() {
         this.props.load_posts();
-        if (!this.pollInterval) {
-          this.pollInterval = setInterval(()=>this.props.load_posts(), 2000);
-        }
-    }
-
-    componentWillUnmount() {
-      if (this.pollInterval) clearInterval(this.pollInterval);
-      this.pollInterval = null;
     }
 
     render() {

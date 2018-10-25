@@ -29,7 +29,8 @@ const INITIAL_STATE = {
         "author":"a" ,
         "description": "b",
         "_id": "0",
-        "updatedAt": ""
+        "updatedAt": "",
+        "image": "",
     }],
     error: null,
     author: '',
@@ -59,6 +60,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 author: "",
                 description: "",
                 file: null,
+                image: null
             }
         case CHANGE_AUTHOR:
             return {
@@ -94,17 +96,18 @@ export default function reducer(state = INITIAL_STATE, action) {
         case SUBMIT_NEW_POST:
         case SUBMIT_NEW_POST_SUCCESS:
             if(action.payload){
-                var prev = state.data;
-                var aut = state.author;
-                var des = state.description;
-                var img = state.image;
-                const new_data = [...prev, { "author": aut, "description": des, "image": img, _id: Date.now().toString() }];
+                const new_data = [...state.data,
+                    { "author": state.author,
+                    "description": state.description,
+                    "image": state.image,
+                    _id: Date.now().toString() }];
                 return {
                     ...state,
                     error_message: "",
                     modal_open: !state.modal_open,
                     author: "",
                     description: "",
+                    file: null,
                     image: null,
                     data: new_data
                 }
@@ -260,7 +263,6 @@ export const load_posts_failure = (dispatch, error) => {
     });
 }
 export const submit_updated_post = (author, description, file, updateId) => {
-    console.log("x" + updateId)
     var formData = new FormData();
     formData.append('author', author);
     formData.append('description', description);
